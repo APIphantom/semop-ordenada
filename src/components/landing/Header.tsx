@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import MobileMenu from "./MobileMenu";
+import { Link } from "react-router-dom";
+import logoSemop from "@/assets/logo-semop.jpg";
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -12,6 +14,7 @@ const Header = () => {
     { label: "Sobre", href: "#sobre" },
     { label: "Serviços", href: "#servicos" },
     { label: "Notícias", href: "#noticias" },
+    { label: "Câmeras", href: "/cameras", isRoute: true },
   ];
 
   return (
@@ -20,27 +23,39 @@ const Header = () => {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <div className="flex items-center">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm md:text-base">S</span>
-              </div>
+            <Link to="/" className="flex items-center gap-3">
+              <img 
+                src={logoSemop} 
+                alt="SEMOP - Secretaria Municipal de Ordem Pública" 
+                className="w-10 h-10 md:w-12 md:h-12 rounded-lg object-cover"
+              />
               <div className="hidden sm:block">
                 <span className="font-bold text-foreground text-lg">SEMOP</span>
                 <p className="text-xs text-muted-foreground">Secretaria de Ordem Pública</p>
               </div>
-            </div>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-8">
             {navItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="text-foreground hover:text-accent transition-colors font-medium"
-              >
-                {item.label}
-              </a>
+              item.isRoute ? (
+                <Link
+                  key={item.label}
+                  to={item.href}
+                  className="text-foreground hover:text-accent transition-colors font-medium"
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className="text-foreground hover:text-accent transition-colors font-medium"
+                >
+                  {item.label}
+                </a>
+              )
             ))}
           </nav>
 

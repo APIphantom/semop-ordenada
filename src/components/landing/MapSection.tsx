@@ -6,8 +6,8 @@ const MapSection = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
 
-  // Coordenadas de exemplo - substitua pelas coordenadas reais da SEMOP
-  const position: [number, number] = [-22.9068, -43.1729]; // Rio de Janeiro como exemplo
+  // Coordenadas reais da SEMOP
+  const position: [number, number] = [-22.491937, -44.089009];
 
   useEffect(() => {
     if (!mapRef.current || mapLoaded) return;
