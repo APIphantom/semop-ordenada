@@ -1,23 +1,56 @@
-import { useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { Icon } from "leaflet";
+import { useEffect, useRef, useState } from "react";
 import SectionTitle from "./SectionTitle";
 import "leaflet/dist/leaflet.css";
 
-// Fix for default marker icon
-const customIcon = new Icon({
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
-
 const MapSection = () => {
+  const mapRef = useRef<HTMLDivElement>(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
+
   // Coordenadas de exemplo - substitua pelas coordenadas reais da SEMOP
   const position: [number, number] = [-22.9068, -43.1729]; // Rio de Janeiro como exemplo
+
+  useEffect(() => {
+    if (!mapRef.current || mapLoaded) return;
+
+    // Dynamic import to avoid SSR issues
+    import("leaflet").then((L) => {
+      // Fix for default marker icon
+      const customIcon = L.icon({
+        iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+        iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+        shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41],
+      });
+
+      const map = L.map(mapRef.current!, {
+        scrollWheelZoom: false,
+      }).setView(position, 15);
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+
+      L.marker(position, { icon: customIcon })
+        .addTo(map)
+        .bindPopup(
+          `<div style="text-align: center;">
+            <strong>SEMOP</strong><br/>
+            <span style="font-size: 12px; color: #666;">Secretaria Municipal de Ordem Pública</span><br/>
+            <span style="font-size: 11px; color: #888;">Av. Principal, 1000 - Centro</span>
+          </div>`
+        );
+
+      setMapLoaded(true);
+
+      return () => {
+        map.remove();
+      };
+    });
+  }, [mapLoaded]);
 
   return (
     <section id="mapa" className="section-spacing bg-secondary">
@@ -30,34 +63,11 @@ const MapSection = () => {
         <div className="animate-fade-in-up">
           <div className="bg-card rounded-xl card-shadow overflow-hidden">
             {/* Map Container */}
-            <div className="h-[400px] md:h-[500px] w-full">
-              <MapContainer
-                center={position}
-                zoom={15}
-                scrollWheelZoom={false}
-                className="h-full w-full z-0"
-              >
-                <TileLayer
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <Marker position={position} icon={customIcon}>
-                  <Popup>
-                    <div className="text-center">
-                      <strong className="text-foreground">SEMOP</strong>
-                      <br />
-                      <span className="text-muted-foreground text-sm">
-                        Secretaria Municipal de Ordem Pública
-                      </span>
-                      <br />
-                      <span className="text-muted-foreground text-xs">
-                        Av. Principal, 1000 - Centro
-                      </span>
-                    </div>
-                  </Popup>
-                </Marker>
-              </MapContainer>
-            </div>
+            <div 
+              ref={mapRef} 
+              className="h-[400px] md:h-[500px] w-full"
+              style={{ zIndex: 0 }}
+            />
 
             {/* Info Bar */}
             <div className="p-6 bg-primary">
