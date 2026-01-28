@@ -6,35 +6,27 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Send, MapPin, Phone, Mail } from "lucide-react";
-
 const ContactSection = () => {
   const [formData, setFormData] = useState({
     nome: "",
     email: "",
-    mensagem: "",
+    mensagem: ""
   });
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Visual only - no backend
     console.log("Form submitted:", formData);
     alert("Formulário enviado! (Apenas visual - sem backend conectado)");
   };
-
-  return (
-    <section id="contato" className="section-spacing bg-card">
+  return <section id="contato" className="section-spacing bg-card">
       <div className="container-semop">
-        <SectionTitle
-          title="Entre em Contato"
-          subtitle="Envie sua mensagem, dúvida ou sugestão para a SEMOP"
-        />
+        <SectionTitle title="Entre em Contato" subtitle="Envie sua mensagem, dúvida ou sugestão para a SEMOP" />
 
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Contact Form */}
@@ -45,55 +37,24 @@ const ContactSection = () => {
                   <Label htmlFor="nome" className="text-foreground font-medium">
                     Nome Completo
                   </Label>
-                  <Input
-                    id="nome"
-                    name="nome"
-                    type="text"
-                    placeholder="Digite seu nome"
-                    value={formData.nome}
-                    onChange={handleChange}
-                    required
-                    className="bg-card border-border focus:border-accent focus:ring-accent rounded-lg"
-                  />
+                  <Input id="nome" name="nome" type="text" placeholder="Digite seu nome" value={formData.nome} onChange={handleChange} required className="bg-card border-border focus:border-accent focus:ring-accent rounded-lg" />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="email" className="text-foreground font-medium">
                     E-mail
                   </Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="seu@email.com"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="bg-card border-border focus:border-accent focus:ring-accent rounded-lg"
-                  />
+                  <Input id="email" name="email" type="email" placeholder="seu@email.com" value={formData.email} onChange={handleChange} required className="bg-card border-border focus:border-accent focus:ring-accent rounded-lg" />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="mensagem" className="text-foreground font-medium">
                     Mensagem
                   </Label>
-                  <Textarea
-                    id="mensagem"
-                    name="mensagem"
-                    placeholder="Digite sua mensagem..."
-                    value={formData.mensagem}
-                    onChange={handleChange}
-                    required
-                    rows={5}
-                    className="bg-card border-border focus:border-accent focus:ring-accent rounded-lg resize-none"
-                  />
+                  <Textarea id="mensagem" name="mensagem" placeholder="Digite sua mensagem..." value={formData.mensagem} onChange={handleChange} required rows={5} className="bg-card border-border focus:border-accent focus:ring-accent rounded-lg resize-none" />
                 </div>
 
-                <Button
-                  type="submit"
-                  className="w-full bg-primary hover:bg-accent text-primary-foreground rounded-lg transition-colors"
-                  size="lg"
-                >
+                <Button type="submit" className="w-full bg-primary hover:bg-accent text-primary-foreground rounded-lg transition-colors" size="lg">
                   <Send className="mr-2 h-4 w-4" />
                   Enviar Mensagem
                 </Button>
@@ -102,7 +63,9 @@ const ContactSection = () => {
           </Card>
 
           {/* Contact Info */}
-          <div className="animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
+          <div className="animate-fade-in-up" style={{
+          animationDelay: "0.1s"
+        }}>
             <div className="space-y-8">
               <div>
                 <h3 className="text-xl font-semibold text-foreground mb-4">
@@ -150,15 +113,11 @@ const ContactSection = () => {
               </div>
 
               {/* Map Placeholder */}
-              <div className="h-48 bg-secondary rounded-xl flex items-center justify-center border border-border">
-                <p className="text-muted-foreground text-sm">Mapa será exibido aqui</p>
-              </div>
+              
             </div>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default ContactSection;
