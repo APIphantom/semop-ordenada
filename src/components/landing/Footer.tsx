@@ -1,4 +1,6 @@
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { Link } from "react-router-dom";
+import logoSemop from "@/assets/logo-semop.jpg";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -15,6 +17,7 @@ const Footer = () => {
       { label: "Ordem Pública", href: "#servicos" },
       { label: "Atendimento ao Cidadão", href: "#servicos" },
       { label: "Ouvidoria", href: "#contato" },
+      { label: "Acesso às Câmeras", href: "/cameras", isRoute: true },
     ],
     acesso: [
       { label: "Portal da Transparência", href: "#" },
@@ -30,15 +33,17 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Logo e Contato */}
           <div className="space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-primary-foreground/20 rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">S</span>
-              </div>
+            <Link to="/" className="flex items-center gap-3">
+              <img 
+                src={logoSemop} 
+                alt="SEMOP" 
+                className="w-12 h-12 rounded-lg object-cover"
+              />
               <div>
                 <span className="font-bold text-lg">SEMOP</span>
                 <p className="text-xs text-primary-foreground/70">Secretaria de Ordem Pública</p>
               </div>
-            </div>
+            </Link>
             
             <div className="space-y-3 text-sm text-primary-foreground/80">
               <div className="flex items-start gap-3">
@@ -83,12 +88,21 @@ const Footer = () => {
             <ul className="space-y-2">
               {links.servicos.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-primary-foreground/80 hover:text-primary-foreground transition-colors text-sm"
-                  >
-                    {link.label}
-                  </a>
+                  {link.isRoute ? (
+                    <Link
+                      to={link.href}
+                      className="text-primary-foreground/80 hover:text-primary-foreground transition-colors text-sm"
+                    >
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <a
+                      href={link.href}
+                      className="text-primary-foreground/80 hover:text-primary-foreground transition-colors text-sm"
+                    >
+                      {link.label}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
